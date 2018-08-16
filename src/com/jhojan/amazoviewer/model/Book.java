@@ -27,8 +27,8 @@ public class Book extends Publication implements IVisualizable {
 		this.isbn = isbn;
 	}
 
-	public boolean isRead() {
-		return read;
+	public String isRead() {
+		return read ? "Si" : "no";
 	}
 
 	public void setRead(boolean read) {
@@ -69,6 +69,21 @@ public class Book extends Publication implements IVisualizable {
 		int result = dateF.getTime() > dateI.getTime() ? (int) (dateF.getTime() - dateI.getTime()) / 1000 : 0;
 		this.setTimeRead(result);
 		
+	}
+	
+	public void view() {
+		setRead(true);
+		Date dateI = startToSee(new Date());
+		
+		for (int i = 0; i < 100000; i++) {
+			System.out.println("..........");
+		}
+		
+		//Termine de verla
+		stopToSee(dateI, new Date());
+		System.out.println();
+		System.out.println("Leiste: " + toString());
+		System.out.println("Por: " + getTimeRead() + " milisegundos");
 	}
 	
 	public static ArrayList<Book> makeBookList() {

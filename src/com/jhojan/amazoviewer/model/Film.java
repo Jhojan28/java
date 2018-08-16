@@ -1,5 +1,17 @@
 package com.jhojan.amazoviewer.model;
 
+/**
+ * <h1>Film</h1>
+ * Film es una clase padre abstracta
+ * <p>
+ * Esta clase es la clase base de la familia Films, como es abstracta
+ * no pueden crearse instancias. Contiene el método abtracto 
+ * {@code view()} que es obligatorio implementar para todo aquél que pertenezca a la familia
+ * @author Jhojan García
+ * @version 1.1
+ * @since 2018
+ * */
+
 public abstract class Film {
 	private String title;
 	private String genre;
@@ -56,6 +68,8 @@ public abstract class Film {
 		this.viewed = viewed;
 	}
 	
+	/**
+	 * {@code view()} es un metodo abstracto obligatorio de implenentar*/
 	public abstract void view();
 	
 }
