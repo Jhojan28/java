@@ -3,14 +3,16 @@ package com.jhojan.amazoviewer.model;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.jhojan.amazonviewer.dao.MovieDAO;
+
 /**
  * Hereda de {@link Film}
  * Implementa de {@link IVisualizable}*/
-public class Movie extends Film implements IVisualizable{
+public class Movie extends Film implements IVisualizable, MovieDAO{
 	private int id;
 	private int timeViewd;
 	
-	
+	public Movie() {}
 	
 	public Movie(String title, String genre, String creator, int duration, short year) {
 		super(title, genre, creator, duration);
@@ -21,6 +23,10 @@ public class Movie extends Film implements IVisualizable{
 		//System.out.println("Title: "+ this.title);
 		//System.out.println("Genre: "+this.genre);
 		//System.out.println("Year: "+this.year);
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getId() {
@@ -65,13 +71,9 @@ public class Movie extends Film implements IVisualizable{
 	}
 	
 	public static ArrayList<Movie> makeMoviesList() {
-		ArrayList<Movie> movies = new ArrayList();
+		Movie movie = new Movie();
 		
-		for (int i = 1; i <= 5; i++) {
-			movies.add(new Movie("Movie " + i, "Genero " + i, "Creador " + i, 120+i, (short)(2017+i)));
-		}
-		
-		return movies;
+		return movie.read();
 	}
 	
 	/**
@@ -80,6 +82,8 @@ public class Movie extends Film implements IVisualizable{
 	@Override
 	public void view() {
 		setViewed(true);
+		Movie movie = new Movie();
+		movie.setMovieViewed(this);
 		Date dateI = startToSee(new Date());
 		
 		for (int i = 0; i < 100000; i++) {

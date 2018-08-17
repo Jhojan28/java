@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.jhojan.amazoviewer.model.Book;
 import com.jhojan.amazoviewer.model.Chapter;
@@ -11,7 +14,7 @@ import com.jhojan.amazoviewer.model.Film;
 import com.jhojan.amazoviewer.model.Magazine;
 import com.jhojan.amazoviewer.model.Movie;
 import com.jhojan.amazoviewer.model.Serie;
-import com.jhojan.makereport.Report;
+import com.anncode.makereport.Report;
 
 /**
  * <h1>AmazonViewer</h1>
@@ -29,7 +32,7 @@ import com.jhojan.makereport.Report;
 
 public class Main {
 	
-	static ArrayList<Movie> movies = Movie.makeMoviesList();
+	static ArrayList<Movie> movies = new ArrayList();
 	static ArrayList<Book> books= Book.makeBookList();
 	static ArrayList<Serie> series = Serie.makeSeriesList();
 
@@ -83,15 +86,15 @@ public class Main {
 			}while(exit != 0);
 		}
 	public static void showMovies() {
+		movies = Movie.makeMoviesList();
 		int exit = 1;
 		do {
 			System.out.println();
 			System.out.println(":: MOVIES ::");
 			System.out.println();
 			
-			for (int i = 0; i < movies.size(); i++) { //1. Movie 1
-				System.out.println(i+1 + ". " + movies.get(i).getTitle() + " Visto: " + movies.get(i).isViewed());
-			}
+			AtomicInteger atomicInteger = new AtomicInteger(12);
+			movies.forEach(m->System.out.println(atomicInteger.getAndIncrement() + ". " + m.getTitle() + " Visto: " + m.isViewed()));
 			
 			System.out.println("0. Regresar al Menu");
 			System.out.println();
@@ -226,18 +229,22 @@ public class Main {
 	
 	public static void makeReport() {
 		Report report = new Report();
-		report.setFileName("Reporte");
-		report.setExt("txt");
+		report.setNameFile("Reporte");
+		report.setExtension("txt");
 		report.setTitle("::VISTOS::");
-		String contentReport = "";
+		StringBuilder contentReport = new StringBuilder();
 		
-		for (Movie movie : movies) {
-			if(movie.getIsViewed()) {
-				contentReport += movie.toString() + "\n";
-			}
-		}
+		movies.stream().filter(m -> m.getIsViewed()).forEach(m->contentReport.append(m.toString() + "\n"));
+		//Predicate<Serie> viewedSeries = s -> s.getIsViewed();
+		//Consumer<Serie> seriesEach = m -> contentReport.append(m.toString() + "\n");
+		Consumer<Serie> seriesEach = s -> {
+			ArrayList<Chapter> chapters = s.getChapters();
+			chapters.stream().filter(c -> c.getIsViewed()).forEach(c -> contentReport.append(c.toString() + "\n"));;
+		};
+		series.stream().forEach(seriesEach);
 		
-		report.setContent(contentReport);
+		//books.stream().filter(b -> b.isRead()).forEach(b->contentReport.append(b.toString() + "\n"));
+		report.setContent(contentReport.toString());
 		report.makeReport();
 	}
 	
@@ -245,8 +252,8 @@ public class Main {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = df.format(date);
 		Report report = new Report();
-		report.setFileName("Reporte: "+dateString);
-		report.setExt("txt");
+		report.setNameFile("Reporte: "+dateString);
+		report.setExtension("txt");
 		report.setTitle("::VISTOS::");
 		String contentReport = "";
 		
