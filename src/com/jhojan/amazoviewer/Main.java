@@ -11,7 +11,7 @@ import com.jhojan.amazoviewer.model.Film;
 import com.jhojan.amazoviewer.model.Magazine;
 import com.jhojan.amazoviewer.model.Movie;
 import com.jhojan.amazoviewer.model.Serie;
-import com.anncode.makereport.Report;
+import com.jhojan.makereport.Report;
 
 /**
  * <h1>AmazonViewer</h1>
@@ -226,8 +226,8 @@ public class Main {
 	
 	public static void makeReport() {
 		Report report = new Report();
-		report.setNameFile("Reporte");
-		report.setExtension("txt");
+		report.setFileName("Reporte");
+		report.setExt("txt");
 		report.setTitle("::VISTOS::");
 		String contentReport = "";
 		
@@ -245,8 +245,8 @@ public class Main {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = df.format(date);
 		Report report = new Report();
-		report.setNameFile("Reporte: "+dateString);
-		report.setExtension("txt");
+		report.setFileName("Reporte: "+dateString);
+		report.setExt("txt");
 		report.setTitle("::VISTOS::");
 		String contentReport = "";
 		
